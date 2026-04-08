@@ -11,6 +11,7 @@ from modbot.env.policy.retrieval import list_policy_sections
 CUSTOM_CSS = """
 :root {
   --modbot-ink: #102a43;
+  --modbot-muted: #486581;
   --modbot-panel: #f5f7f2;
   --modbot-accent: #1f6f5f;
   --modbot-accent-2: #d97b2d;
@@ -18,9 +19,19 @@ CUSTOM_CSS = """
 }
 body, .gradio-container {
   font-family: 'IBM Plex Sans', 'Segoe UI', sans-serif;
+  color: var(--modbot-ink);
   background:
     radial-gradient(circle at top left, rgba(217,123,45,0.14), transparent 30%),
     linear-gradient(180deg, #f7f3ea 0%, #edf2ef 100%);
+}
+.gradio-container .block-title,
+.gradio-container .block-info,
+.gradio-container .form label,
+.gradio-container .form legend,
+.gradio-container .input-container label,
+.gradio-container .table-wrap + div,
+.gradio-container .wrap label {
+  color: var(--modbot-ink) !important;
 }
 .topbar {
   padding: 20px 24px;
@@ -69,6 +80,52 @@ body, .gradio-container {
   border: 1px solid var(--modbot-border);
   border-radius: 18px;
   background: rgba(255,255,255,0.78);
+  padding: 16px 18px;
+  color: var(--modbot-ink) !important;
+  box-shadow: 0 8px 24px rgba(16, 42, 67, 0.06);
+}
+.panel-block h1,
+.panel-block h2,
+.panel-block h3,
+.panel-block h4,
+.panel-block p,
+.panel-block li,
+.panel-block strong,
+.panel-block span,
+.panel-block div,
+.panel-block td,
+.panel-block th {
+  color: var(--modbot-ink) !important;
+}
+.panel-block h2,
+.panel-block h3 {
+  margin-top: 0;
+  letter-spacing: 0.01em;
+}
+.panel-block p,
+.panel-block li {
+  color: var(--modbot-muted) !important;
+}
+.panel-block code,
+.panel-block pre {
+  background: rgba(16, 42, 67, 0.08) !important;
+  color: #12343b !important;
+  border-radius: 8px;
+}
+.panel-block ul,
+.panel-block ol {
+  padding-left: 1.25rem;
+}
+.gradio-container .prose,
+.gradio-container .prose p,
+.gradio-container .prose li,
+.gradio-container .prose strong,
+.gradio-container .prose h1,
+.gradio-container .prose h2,
+.gradio-container .prose h3,
+.gradio-container .prose h4,
+.gradio-container .prose code {
+  color: inherit !important;
 }
 """
 
