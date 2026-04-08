@@ -10,3 +10,7 @@ def main() -> None:
     """Run the combined API and UI server."""
 
     launch()
+
+
+if __name__ == "__main__":
+    main()
