@@ -15,6 +15,7 @@ from modbot.app.ui.components.formatters import (
     trajectory_rows,
 )
 from modbot.env.models.action import ActionModel
+from modbot.env.models.config import ActionType
 from modbot.clients.llm_client import choose_action
 
 SESSION_STORE = get_session_store()
