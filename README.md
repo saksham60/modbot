@@ -5,7 +5,7 @@ colorFrom: blue
 colorTo: gray
 sdk: docker
 app_port: 7860
-short_description: Stateful trust and safety moderation simulator for RL agents.
+short_description: Stateful trust and safety simulator for RL agents.
 ---
 
 # ModBot: Trust & Safety Policy Simulator
