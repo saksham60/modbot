@@ -12,3 +12,6 @@ build/
 .coverage
 htmlcov/
 hf_home/
+.env
+.env.*
+!.env.example

@@ -7,6 +7,9 @@ import os
 from fastapi import FastAPI
 
 from modbot.app.api.routes.environment import router as environment_router
+from modbot.env.utils.env import load_environment
+
+load_environment()
 
 
 def create_app() -> FastAPI:

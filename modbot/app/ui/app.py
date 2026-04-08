@@ -5,7 +5,9 @@ from __future__ import annotations
 import os
 
 from modbot.app.ui.pages.console_page import build_ui
+from modbot.env.utils.env import load_environment
 
+load_environment()
 
 demo = build_ui()
 

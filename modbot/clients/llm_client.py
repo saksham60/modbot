@@ -14,6 +14,9 @@ from modbot.env.models.action import ActionModel
 from modbot.env.models.config import ActionType
 from modbot.env.models.observation import ObservationModel
 from modbot.clients.prompt_builder import SYSTEM_PROMPT
+from modbot.env.utils.env import load_environment
+
+load_environment()
 
 SATIRE_CUES = [
     "minister of naps",

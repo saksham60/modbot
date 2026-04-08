@@ -164,6 +164,16 @@ pip install -e .[dev]
 python -m modbot.scripts.demo_rollout easy --seed 7
 ```
 
+## Environment Variables
+
+The project supports an optional root `.env` file for local development.
+
+```bash
+cp .env.example .env
+```
+
+Runtime environment variables still take priority over `.env` values. This means local `.env` support does not interfere with Hugging Face Spaces, where configuration should still be set through Space Variables and Secrets.
+
 ## Baseline Evaluation
 
 The baseline evaluator supports a deterministic heuristic client by default and an OpenAI-compatible HTTP client through environment variables.
