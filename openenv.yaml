@@ -17,6 +17,6 @@ tasks:
   - hard
 seed_support: true
 deployment:
-  dockerfile: modbot/deployment/Dockerfile
+  dockerfile: Dockerfile
   ui_entrypoint: modbot.app.ui.app:launch
   api_entrypoint: modbot.app.api.server:create_app

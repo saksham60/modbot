@@ -9,6 +9,6 @@
 Local build:
 
 ```bash
-docker build -f modbot/deployment/Dockerfile -t modbot .
+docker build -t modbot .
 docker run --rm -p 7860:7860 modbot
 ```

@@ -1,13 +1,28 @@
 """Environment API endpoints."""
 
-from fastapi import APIRouter, Depends, HTTPException
+from typing import Any
+
+from fastapi import APIRouter, Body, Depends, HTTPException
+from pydantic import ValidationError
 
 from modbot.app.api.deps import get_session_store
-from modbot.app.api.schemas import HealthResponse, SessionRequest, SessionResponse, StateResponse, StepRequest, StepResponse
+from modbot.app.api.schemas import (
+    HealthResponse,
+    OpenEnvStepResponse,
+    SessionRequest,
+    SessionResponse,
+    StateResponse,
+    StepRequest,
+    StepResponse,
+)
+from modbot.env.models.action import ActionModel
+from modbot.env.models.observation import ObservationModel
+from modbot.env.models.state import EnvironmentStateModel
 from modbot.app.api.services.session_store import SessionStore
 
 router = APIRouter(tags=["environment"])
 SUPPORTED_TASKS = ["easy", "medium", "hard"]
+OPENENV_SESSION_ID = "__openenv__"
 
 
 @router.get("/health", response_model=HealthResponse)
@@ -39,6 +54,21 @@ def create_session(
     return SessionResponse(session_id=session_id, observation=observation)
 
 
+@router.post("/reset", response_model=ObservationModel)
+def openenv_reset(
+    request: SessionRequest | None = Body(default=None),
+    session_store: SessionStore = Depends(get_session_store),
+) -> ObservationModel:
+    """Reset the default OpenEnv session and return the initial observation."""
+
+    request = request or SessionRequest()
+    return session_store.create_or_reset_named_session(
+        OPENENV_SESSION_ID,
+        task_id=request.task_id,
+        seed=request.seed,
+    )
+
+
 @router.post("/sessions/{session_id}/reset", response_model=SessionResponse)
 def reset_session(
     session_id: str,
@@ -52,6 +82,31 @@ def reset_session(
     except KeyError as error:
         raise HTTPException(status_code=404, detail="Unknown session id") from error
     return SessionResponse(session_id=session_id, observation=observation)
+
+
+@router.post("/step", response_model=OpenEnvStepResponse)
+def openenv_step(
+    request: dict[str, Any] = Body(...),
+    session_store: SessionStore = Depends(get_session_store),
+) -> OpenEnvStepResponse:
+    """Step the default OpenEnv session with either wrapped or direct action payloads."""
+
+    if not session_store.has_session(OPENENV_SESSION_ID):
+        session_store.create_or_reset_named_session(OPENENV_SESSION_ID)
+
+    try:
+        action_payload = request.get("action", request)
+        action = ActionModel.model_validate(action_payload)
+    except ValidationError as error:
+        raise HTTPException(status_code=422, detail=error.errors()) from error
+
+    observation, reward, done, info = session_store.step_session(OPENENV_SESSION_ID, action)
+    return OpenEnvStepResponse(
+        observation=observation,
+        reward=reward,
+        done=done,
+        info=info,
+    )
 
 
 @router.post("/sessions/{session_id}/step", response_model=StepResponse)
@@ -73,6 +128,17 @@ def step_session(
         done=done,
         info=info,
     )
+
+
+@router.get("/state", response_model=EnvironmentStateModel)
+def openenv_state(
+    session_store: SessionStore = Depends(get_session_store),
+) -> EnvironmentStateModel:
+    """Return the public state for the default OpenEnv session."""
+
+    if not session_store.has_session(OPENENV_SESSION_ID):
+        session_store.create_or_reset_named_session(OPENENV_SESSION_ID)
+    return session_store.state(OPENENV_SESSION_ID)
 
 
 @router.get("/sessions/{session_id}/state", response_model=StateResponse)

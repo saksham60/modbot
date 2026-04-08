@@ -38,6 +38,8 @@ ModBot exposes the standard environment interface:
 
 Metadata is declared in `openenv.yaml`.
 
+The benchmark-compatible inference entrypoint is the repo-root `inference.py`.
+
 ## Project Layout
 
 ```text
@@ -213,11 +215,22 @@ python -m modbot.app.api.server
 Key endpoints:
 
 - `GET /health`
+- `POST /reset`
+- `POST /step`
+- `GET /state`
 - `GET /tasks`
 - `POST /sessions`
 - `POST /sessions/{session_id}/reset`
 - `POST /sessions/{session_id}/step`
 - `GET /sessions/{session_id}/state`
+
+OpenEnv-compatible smoke test commands:
+
+```bash
+curl -X POST http://127.0.0.1:8000/reset -H "Content-Type: application/json" -d "{\"task_id\":\"easy\",\"seed\":7}"
+curl -X POST http://127.0.0.1:8000/step -H "Content-Type: application/json" -d "{\"action_type\":\"review_report\",\"report_id\":\"easy-001\"}"
+curl http://127.0.0.1:8000/state
+```
 
 ## UI Demo
 
@@ -236,10 +249,32 @@ The UI is a moderation console with:
 - trajectory log
 - episode summary
 
+## Benchmark Inference
+
+The benchmark runner must be invoked from the repo root:
+
+```bash
+python inference.py
+```
+
+Required benchmark-facing environment variables:
+
+- `API_BASE_URL`
+- `MODEL_NAME`
+- `HF_TOKEN`
+- `LOCAL_IMAGE_NAME` or `IMAGE_NAME`
+
+Optional ModBot controls:
+
+- `MODBOT_TASK`
+- `MODBOT_BENCHMARK`
+- `MODBOT_MAX_STEPS`
+- `MODBOT_SUCCESS_THRESHOLD`
+
 ## Docker
 
 ```bash
-docker build -f modbot/deployment/Dockerfile -t modbot .
+docker build -t modbot .
 docker run --rm -p 7860:7860 modbot
 ```
 
@@ -260,6 +295,15 @@ This repository is prepared for Docker-based Spaces deployment.
 pytest
 ```
 
+Manual verification checklist:
+
+- confirm repo-root `inference.py` exists
+- run `python inference.py`
+- run `python -m modbot.app.api.server`
+- verify `POST /reset`, `POST /step`, and `GET /state`
+- run `python -m modbot.app.ui.app`
+- verify the UI panels render with readable dark text
+
 The test suite covers:
 
 - reset correctness
@@ -275,6 +319,7 @@ The test suite covers:
 ## Additional Docs
 
 - `modbot/docs/architecture.md`
+- `modbot/docs/testing.md`
 - `modbot/docs/task_design.md`
 - `modbot/docs/reward_design.md`
 - `modbot/docs/grading_design.md`

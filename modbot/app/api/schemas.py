@@ -38,6 +38,15 @@ class StepResponse(BaseModel):
     info: StepInfoModel
 
 
+class OpenEnvStepResponse(BaseModel):
+    """Response returned by the OpenEnv-compatible step endpoint."""
+
+    observation: ObservationModel
+    reward: float
+    done: bool
+    info: StepInfoModel
+
+
 class StateResponse(BaseModel):
     """Public state snapshot for a session."""
 

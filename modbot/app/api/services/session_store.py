@@ -29,6 +29,17 @@ class SessionStore:
         self._sessions[session_id] = SessionRecord(env=env, observation=observation)
         return session_id, observation
 
+    def create_or_reset_named_session(self, session_id: str, task_id: str = "easy", seed: int | None = None):
+        """Create a deterministic session id or reset it if it already exists."""
+
+        if session_id in self._sessions:
+            return self.reset_session(session_id, task_id=task_id, seed=seed)
+
+        env = ModBotEnv(task_id=task_id, seed=seed)
+        observation = env.reset(task_id=task_id, seed=seed)
+        self._sessions[session_id] = SessionRecord(env=env, observation=observation)
+        return observation
+
     def has_session(self, session_id: str) -> bool:
         return session_id in self._sessions
 
