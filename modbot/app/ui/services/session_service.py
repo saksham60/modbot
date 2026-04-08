@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from pydantic import ValidationError
+
 from modbot.app.api.deps import get_session_store
 from modbot.app.ui.components.formatters import (
     queue_rows,
@@ -23,6 +25,35 @@ def _normalize_text(value: str | None) -> str | None:
         return None
     value = value.strip()
     return value or None
+
+
+def _apply_action_defaults(observation, payload: dict[str, str | None]) -> dict[str, str | None]:
+    """Fill obvious action fields from the current observation for manual UI steps."""
+
+    action_type = payload["action_type"]
+    current_report = observation.current_report
+
+    if not payload.get("report_id"):
+        if action_type == ActionType.REVIEW_REPORT.value and observation.queue_snapshot:
+            payload["report_id"] = observation.queue_snapshot[0].report_id
+        elif current_report is not None:
+            payload["report_id"] = current_report.report_id
+
+    if action_type == ActionType.FETCH_USER_HISTORY.value and not payload.get("user_id") and current_report is not None:
+        payload["user_id"] = current_report.user_id
+
+    return payload
+
+
+def _validation_message(error: ValidationError) -> str:
+    """Return a compact operator-facing validation error."""
+
+    messages = []
+    for issue in error.errors():
+        location = ".".join(str(part) for part in issue.get("loc", ()))
+        prefix = f"{location}: " if location else ""
+        messages.append(f"{prefix}{issue['msg']}")
+    return "Invalid action input. " + " | ".join(messages)
 
 
 def _render(session_id: str, last_message: str = ""):
@@ -66,6 +97,7 @@ def step_session(
     if not session_id or not SESSION_STORE.has_session(session_id):
         session_id, _ = SESSION_STORE.create_session(task_id=task_id, seed=int(seed))
 
+    observation = SESSION_STORE.observation(session_id)
     payload = {
         "action_type": action_type,
         "report_id": _normalize_text(report_id),
@@ -73,8 +105,12 @@ def step_session(
         "policy_section": _normalize_text(policy_section),
         "notes": _normalize_text(notes),
     }
+    payload = _apply_action_defaults(observation, payload)
     payload = {key: value for key, value in payload.items() if value is not None}
-    action = ActionModel.model_validate(payload)
+    try:
+        action = ActionModel.model_validate(payload)
+    except ValidationError as error:
+        return _render(session_id, last_message=_validation_message(error))
     _, reward, _, info = SESSION_STORE.step_session(session_id, action)
     return _render(session_id, last_message=f"{info.message} Reward {reward:.2f}.")
 
