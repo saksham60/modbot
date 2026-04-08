@@ -1,0 +1,33 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "modbot"
+version = "0.1.0"
+description = "ModBot: Trust & Safety Policy Simulator"
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+authors = [{ name = "OpenAI Codex" }]
+dependencies = [
+  "fastapi>=0.115.0",
+  "gradio>=5.0.0",
+  "httpx>=0.28.0",
+  "pydantic>=2.8.0",
+  "PyYAML>=6.0.0",
+  "uvicorn>=0.30.0",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8.0.0",
+]
+
+[tool.setuptools.packages.find]
+include = ["modbot*"]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["modbot/tests"]
+

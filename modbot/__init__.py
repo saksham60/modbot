@@ -1,0 +1,1 @@
+"""ModBot package root."""

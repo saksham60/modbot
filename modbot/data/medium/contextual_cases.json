@@ -1,0 +1,217 @@
+{
+  "seed": 0,
+  "config": {
+    "task_id": "medium",
+    "difficulty": "medium",
+    "display_name": "Contextual Moderation",
+    "description": "Ambiguous sarcasm, satire, and harassment where context gathering matters.",
+    "max_steps": 24,
+    "review_budget": 14,
+    "initial_community_trust": 70.0,
+    "initial_appeal_pressure": 10.0,
+    "initial_backlog_pressure": 16.0,
+    "grader_key": "medium"
+  },
+  "reports": [
+    {
+      "report_id": "medium-001",
+      "content_id": "post-2001",
+      "user_id": "user-echo",
+      "thread_id": "thread-m1",
+      "author_handle": "echo_jokes",
+      "content_text": "Yeah, because obviously the mayor is a genius... sure.",
+      "content_type": "comment",
+      "report_reason": "hate or harassment",
+      "reporter_count": 3,
+      "queue_priority": 8,
+      "created_at": "2026-04-08T09:00:00Z",
+      "language": "en",
+      "visible_note": "Reported as abusive sarcasm.",
+      "available_user_history": {
+        "prior_warnings": 0,
+        "prior_removals": 0,
+        "recent_reports_against": 0,
+        "account_age_days": 610,
+        "trust_tier": "high",
+        "note": "Mostly political commentary with no prior abuse."
+      },
+      "available_thread_context": {
+        "thread_id": "thread-m1",
+        "summary": "The thread is about city transit funding and includes sarcastic criticism of public officials.",
+        "neighboring_posts": [
+          "Several users criticize the mayor's budget plan.",
+          "No targeted slurs or personal threats appear nearby."
+        ],
+        "hostility_signal": 0.2,
+        "irony_signal": 0.85,
+        "brigading_signal": 0.0
+      },
+      "relevant_policy_section": "SATIRE-1",
+      "truth": {
+        "gold_action": "ignore_report",
+        "severity": "none",
+        "harmful": false,
+        "ambiguous": true,
+        "severe_violation": false,
+        "requires_user_history": false,
+        "requires_thread_context": true,
+        "requires_policy_lookup": true,
+        "likely_appeal_if_overenforced": 0.9,
+        "likely_harm_if_ignored": 0.0,
+        "brigading_target": false,
+        "false_report": false,
+        "recommended_notes": "Context makes the sarcasm benign."
+      }
+    },
+    {
+      "report_id": "medium-002",
+      "content_id": "post-2002",
+      "user_id": "user-foxtrot",
+      "thread_id": "thread-m2",
+      "author_handle": "foxtrot_alt",
+      "content_text": "You're a useless clown and everyone here knows it.",
+      "content_type": "comment",
+      "report_reason": "targeted harassment",
+      "reporter_count": 2,
+      "queue_priority": 7,
+      "created_at": "2026-04-08T09:03:00Z",
+      "language": "en",
+      "visible_note": "Could be harassment or banter.",
+      "available_user_history": {
+        "prior_warnings": 3,
+        "prior_removals": 1,
+        "recent_reports_against": 6,
+        "account_age_days": 90,
+        "trust_tier": "low",
+        "note": "Pattern of personal attacks toward the same creator."
+      },
+      "available_thread_context": {
+        "thread_id": "thread-m2",
+        "summary": "The same author has attacked one streamer repeatedly across this thread.",
+        "neighboring_posts": [
+          "Earlier replies from the author say the target should leave the platform.",
+          "The target asked the author to stop."
+        ],
+        "hostility_signal": 0.82,
+        "irony_signal": 0.12,
+        "brigading_signal": 0.1
+      },
+      "relevant_policy_section": "ABUSE-1",
+      "truth": {
+        "gold_action": "remove_content",
+        "severity": "high",
+        "harmful": true,
+        "ambiguous": true,
+        "severe_violation": true,
+        "requires_user_history": true,
+        "requires_thread_context": true,
+        "requires_policy_lookup": false,
+        "likely_appeal_if_overenforced": 0.2,
+        "likely_harm_if_ignored": 0.8,
+        "brigading_target": false,
+        "false_report": false,
+        "recommended_notes": "History and context show sustained harassment."
+      }
+    },
+    {
+      "report_id": "medium-003",
+      "content_id": "post-2003",
+      "user_id": "user-golf",
+      "thread_id": "thread-m3",
+      "author_handle": "golf_livefeed",
+      "content_text": "Hospitals are hiding the truth, stop taking your meds and join tonight's stream.",
+      "content_type": "post",
+      "report_reason": "dangerous misinformation",
+      "reporter_count": 5,
+      "queue_priority": 10,
+      "created_at": "2026-04-08T09:08:00Z",
+      "language": "en",
+      "visible_note": "Potential public-harm misinformation.",
+      "available_user_history": {
+        "prior_warnings": 1,
+        "prior_removals": 0,
+        "recent_reports_against": 3,
+        "account_age_days": 220,
+        "trust_tier": "standard",
+        "note": "Has posted similar streams but not previously escalated."
+      },
+      "available_thread_context": {
+        "thread_id": "thread-m3",
+        "summary": "Users are arguing over health misinformation with some quoting the post to debunk it.",
+        "neighboring_posts": [
+          "One reply warns others not to follow the advice.",
+          "Another asks moderators to intervene quickly."
+        ],
+        "hostility_signal": 0.35,
+        "irony_signal": 0.15,
+        "brigading_signal": 0.05
+      },
+      "relevant_policy_section": "MISINFO-2",
+      "truth": {
+        "gold_action": "escalate_case",
+        "severity": "high",
+        "harmful": true,
+        "ambiguous": true,
+        "severe_violation": true,
+        "requires_user_history": false,
+        "requires_thread_context": false,
+        "requires_policy_lookup": true,
+        "likely_appeal_if_overenforced": 0.3,
+        "likely_harm_if_ignored": 0.9,
+        "brigading_target": false,
+        "false_report": false,
+        "recommended_notes": "Escalation is safer than ad hoc removal in a public-harm case."
+      }
+    },
+    {
+      "report_id": "medium-004",
+      "content_id": "post-2004",
+      "user_id": "user-hotel",
+      "thread_id": "thread-m4",
+      "author_handle": "hotel_memes",
+      "content_text": "Breaking news: my cat has been appointed minister of naps.",
+      "content_type": "post",
+      "report_reason": "misinformation",
+      "reporter_count": 2,
+      "queue_priority": 4,
+      "created_at": "2026-04-08T09:10:00Z",
+      "language": "en",
+      "visible_note": "Satirical meme post.",
+      "available_user_history": {
+        "prior_warnings": 0,
+        "prior_removals": 0,
+        "recent_reports_against": 0,
+        "account_age_days": 980,
+        "trust_tier": "high",
+        "note": "Well-known satire account."
+      },
+      "available_thread_context": {
+        "thread_id": "thread-m4",
+        "summary": "Followers respond with obvious jokes and cat puns.",
+        "neighboring_posts": [
+          "A reply says 'all hail the minister'.",
+          "Another calls it the best joke of the day."
+        ],
+        "hostility_signal": 0.0,
+        "irony_signal": 0.98,
+        "brigading_signal": 0.0
+      },
+      "relevant_policy_section": "SATIRE-1",
+      "truth": {
+        "gold_action": "ignore_report",
+        "severity": "none",
+        "harmful": false,
+        "ambiguous": true,
+        "severe_violation": false,
+        "requires_user_history": true,
+        "requires_thread_context": true,
+        "requires_policy_lookup": false,
+        "likely_appeal_if_overenforced": 1.0,
+        "likely_harm_if_ignored": 0.0,
+        "brigading_target": false,
+        "false_report": false,
+        "recommended_notes": "History and thread context show obvious satire."
+      }
+    }
+  ]
+}

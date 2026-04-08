@@ -1,0 +1,13 @@
+tasks:
+  easy:
+    description: Clear-cut harmful and benign moderation cases.
+    data_glob: data/easy/*.json
+    grader: easy
+  medium:
+    description: Context-dependent moderation with ambiguity and sarcasm.
+    data_glob: data/medium/*.json
+    grader: medium
+  hard:
+    description: Brigading surge with false reports, real harm, and tight review budget.
+    data_glob: data/hard/*.json
+    grader: hard

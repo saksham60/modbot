@@ -1,0 +1,13 @@
+weights:
+  valid_action: 0.2
+  relevant_context: 0.35
+  moderation_correctness: 1.2
+  severe_violation_bonus: 0.6
+  benign_preservation_bonus: 0.5
+  queue_efficiency: 0.25
+  backlog_penalty: -0.4
+  appeal_penalty: -0.35
+  trust_delta: 0.08
+  invalid_action: -1.5
+  redundant_action: -0.3
+  wasted_budget: -0.15

@@ -1,0 +1,10 @@
+{
+  "task_id": "easy",
+  "step": 0,
+  "current_report": null,
+  "queue_snapshot": [],
+  "allowed_actions": ["review_report"],
+  "fetched_context": {},
+  "remaining_review_budget": 0,
+  "visible_metrics": {}
+}

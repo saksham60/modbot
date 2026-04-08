@@ -1,0 +1,22 @@
+name: modbot
+title: ModBot - Trust & Safety Policy Simulator
+description: >
+  A stateful moderation operations environment with sequential actions,
+  hidden world state, dense reward shaping, and deterministic final grading.
+entrypoint: modbot.env.core.environment:ModBotEnv
+reset_method: reset
+step_method: step
+state_method: state
+action_model: modbot.env.models.action:ActionModel
+observation_model: modbot.env.models.observation:ObservationModel
+info_model: modbot.env.models.info:StepInfoModel
+state_model: modbot.env.models.state:EnvironmentStateModel
+tasks:
+  - easy
+  - medium
+  - hard
+seed_support: true
+deployment:
+  dockerfile: modbot/deployment/Dockerfile
+  ui_entrypoint: modbot.app.ui.app:launch
+  api_entrypoint: modbot.app.api.server:create_app

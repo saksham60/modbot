@@ -1,0 +1,417 @@
+{
+  "seed": 0,
+  "config": {
+    "task_id": "hard",
+    "difficulty": "hard",
+    "display_name": "Brigading Surge",
+    "description": "High-volume reports with a mix of real abuse, false reports, and limited review budget.",
+    "max_steps": 28,
+    "review_budget": 12,
+    "initial_community_trust": 68.0,
+    "initial_appeal_pressure": 15.0,
+    "initial_backlog_pressure": 35.0,
+    "grader_key": "hard"
+  },
+  "reports": [
+    {
+      "report_id": "hard-001",
+      "content_id": "post-3001",
+      "user_id": "user-india",
+      "thread_id": "thread-h1",
+      "author_handle": "india_stream",
+      "content_text": "The council vote hurts disabled riders. Read the budget before cheering.",
+      "content_type": "post",
+      "report_reason": "misinformation",
+      "reporter_count": 29,
+      "queue_priority": 10,
+      "created_at": "2026-04-08T10:00:00Z",
+      "language": "en",
+      "visible_note": "Mass-reported during a political dogpile.",
+      "available_user_history": {
+        "prior_warnings": 0,
+        "prior_removals": 0,
+        "recent_reports_against": 1,
+        "account_age_days": 1440,
+        "trust_tier": "high",
+        "note": "Long-running civic advocacy account."
+      },
+      "available_thread_context": {
+        "thread_id": "thread-h1",
+        "summary": "A coordinated group is spamming reports against an activist after a viral clip spread.",
+        "neighboring_posts": [
+          "Dozens of replies copy the same accusation template.",
+          "Independent replies link to the actual public budget."
+        ],
+        "hostility_signal": 0.3,
+        "irony_signal": 0.1,
+        "brigading_signal": 0.96
+      },
+      "relevant_policy_section": "DOGPILE-3",
+      "truth": {
+        "gold_action": "ignore_report",
+        "severity": "none",
+        "harmful": false,
+        "ambiguous": true,
+        "severe_violation": false,
+        "requires_user_history": false,
+        "requires_thread_context": true,
+        "requires_policy_lookup": true,
+        "likely_appeal_if_overenforced": 1.0,
+        "likely_harm_if_ignored": 0.0,
+        "brigading_target": true,
+        "false_report": true,
+        "recommended_notes": "False reports should not drive removal."
+      }
+    },
+    {
+      "report_id": "hard-002",
+      "content_id": "post-3002",
+      "user_id": "user-juliet",
+      "thread_id": "thread-h2",
+      "author_handle": "juliet_rage",
+      "content_text": "Drop their address. Someone should teach that rat a lesson tonight.",
+      "content_type": "comment",
+      "report_reason": "violent threat",
+      "reporter_count": 8,
+      "queue_priority": 10,
+      "created_at": "2026-04-08T10:01:00Z",
+      "language": "en",
+      "visible_note": "Direct threat and doxxing request.",
+      "available_user_history": {
+        "prior_warnings": 2,
+        "prior_removals": 2,
+        "recent_reports_against": 7,
+        "account_age_days": 120,
+        "trust_tier": "low",
+        "note": "History of escalating abuse."
+      },
+      "available_thread_context": {
+        "thread_id": "thread-h2",
+        "summary": "Reply chain turned into a mob targeting one creator.",
+        "neighboring_posts": [
+          "Users are encouraging others to swarm the target.",
+          "One reply asks for personal details."
+        ],
+        "hostility_signal": 0.97,
+        "irony_signal": 0.03,
+        "brigading_signal": 0.7
+      },
+      "relevant_policy_section": "ABUSE-1",
+      "truth": {
+        "gold_action": "remove_content",
+        "severity": "critical",
+        "harmful": true,
+        "ambiguous": false,
+        "severe_violation": true,
+        "requires_user_history": false,
+        "requires_thread_context": false,
+        "requires_policy_lookup": false,
+        "likely_appeal_if_overenforced": 0.1,
+        "likely_harm_if_ignored": 1.0,
+        "brigading_target": false,
+        "false_report": false,
+        "recommended_notes": "Highest-priority removal."
+      }
+    },
+    {
+      "report_id": "hard-003",
+      "content_id": "post-3003",
+      "user_id": "user-kilo",
+      "thread_id": "thread-h3",
+      "author_handle": "kilo_crisis",
+      "content_text": "I can't do this anymore. Tonight is the end for me.",
+      "content_type": "post",
+      "report_reason": "self-harm risk",
+      "reporter_count": 6,
+      "queue_priority": 9,
+      "created_at": "2026-04-08T10:02:00Z",
+      "language": "en",
+      "visible_note": "Possible imminent self-harm.",
+      "available_user_history": {
+        "prior_warnings": 0,
+        "prior_removals": 0,
+        "recent_reports_against": 0,
+        "account_age_days": 300,
+        "trust_tier": "standard",
+        "note": "Recent posts suggest distress."
+      },
+      "available_thread_context": {
+        "thread_id": "thread-h3",
+        "summary": "Friends are asking the author to answer messages immediately.",
+        "neighboring_posts": [
+          "One reply says emergency services were contacted.",
+          "Another asks moderators for urgent help."
+        ],
+        "hostility_signal": 0.0,
+        "irony_signal": 0.0,
+        "brigading_signal": 0.0
+      },
+      "relevant_policy_section": "SELF-HARM-ESC",
+      "truth": {
+        "gold_action": "escalate_case",
+        "severity": "critical",
+        "harmful": true,
+        "ambiguous": false,
+        "severe_violation": true,
+        "requires_user_history": false,
+        "requires_thread_context": false,
+        "requires_policy_lookup": true,
+        "likely_appeal_if_overenforced": 0.0,
+        "likely_harm_if_ignored": 1.0,
+        "brigading_target": false,
+        "false_report": false,
+        "recommended_notes": "Immediate escalation is required."
+      }
+    },
+    {
+      "report_id": "hard-004",
+      "content_id": "post-3004",
+      "user_id": "user-lima",
+      "thread_id": "thread-h4",
+      "author_handle": "lima_deals",
+      "content_text": "Flash sale, free phones if you sign up here now: fake-prize.biz",
+      "content_type": "post",
+      "report_reason": "scam or spam",
+      "reporter_count": 5,
+      "queue_priority": 7,
+      "created_at": "2026-04-08T10:03:00Z",
+      "language": "en",
+      "visible_note": "Spam wave candidate.",
+      "available_user_history": {
+        "prior_warnings": 1,
+        "prior_removals": 4,
+        "recent_reports_against": 12,
+        "account_age_days": 18,
+        "trust_tier": "low",
+        "note": "Likely part of a spam cluster."
+      },
+      "available_thread_context": {
+        "thread_id": "thread-h4",
+        "summary": "Standalone promotional scam post shared across multiple groups.",
+        "neighboring_posts": [
+          "No real discussion in the thread.",
+          "Another similar post appeared minutes earlier."
+        ],
+        "hostility_signal": 0.05,
+        "irony_signal": 0.0,
+        "brigading_signal": 0.0
+      },
+      "relevant_policy_section": "SPAM-1",
+      "truth": {
+        "gold_action": "remove_content",
+        "severity": "medium",
+        "harmful": true,
+        "ambiguous": false,
+        "severe_violation": false,
+        "requires_user_history": false,
+        "requires_thread_context": false,
+        "requires_policy_lookup": false,
+        "likely_appeal_if_overenforced": 0.1,
+        "likely_harm_if_ignored": 0.8,
+        "brigading_target": false,
+        "false_report": false,
+        "recommended_notes": "Routine spam removal."
+      }
+    },
+    {
+      "report_id": "hard-005",
+      "content_id": "post-3005",
+      "user_id": "user-mike",
+      "thread_id": "thread-h5",
+      "author_handle": "mike_satire",
+      "content_text": "Sure, next let's let raccoons run the central bank too.",
+      "content_type": "comment",
+      "report_reason": "hate speech",
+      "reporter_count": 9,
+      "queue_priority": 6,
+      "created_at": "2026-04-08T10:04:00Z",
+      "language": "en",
+      "visible_note": "Ambiguous political sarcasm under heavy reporting.",
+      "available_user_history": {
+        "prior_warnings": 0,
+        "prior_removals": 0,
+        "recent_reports_against": 1,
+        "account_age_days": 860,
+        "trust_tier": "high",
+        "note": "Known for satire, not harassment."
+      },
+      "available_thread_context": {
+        "thread_id": "thread-h5",
+        "summary": "The thread mocks an economic proposal with exaggerated jokes.",
+        "neighboring_posts": [
+          "Several replies extend the joke in the same tone.",
+          "No protected-class targeting appears nearby."
+        ],
+        "hostility_signal": 0.1,
+        "irony_signal": 0.9,
+        "brigading_signal": 0.5
+      },
+      "relevant_policy_section": "SATIRE-1",
+      "truth": {
+        "gold_action": "ignore_report",
+        "severity": "none",
+        "harmful": false,
+        "ambiguous": true,
+        "severe_violation": false,
+        "requires_user_history": false,
+        "requires_thread_context": true,
+        "requires_policy_lookup": false,
+        "likely_appeal_if_overenforced": 0.95,
+        "likely_harm_if_ignored": 0.0,
+        "brigading_target": true,
+        "false_report": true,
+        "recommended_notes": "Context prevents false removal."
+      }
+    },
+    {
+      "report_id": "hard-006",
+      "content_id": "post-3006",
+      "user_id": "user-november",
+      "thread_id": "thread-h6",
+      "author_handle": "november_leak",
+      "content_text": "Here's her number and street. Make her regret posting that clip.",
+      "content_type": "comment",
+      "report_reason": "doxxing and abuse",
+      "reporter_count": 7,
+      "queue_priority": 9,
+      "created_at": "2026-04-08T10:05:00Z",
+      "language": "en",
+      "visible_note": "Personal information and mob targeting.",
+      "available_user_history": {
+        "prior_warnings": 2,
+        "prior_removals": 1,
+        "recent_reports_against": 4,
+        "account_age_days": 75,
+        "trust_tier": "low",
+        "note": "Previously warned for harassment."
+      },
+      "available_thread_context": {
+        "thread_id": "thread-h6",
+        "summary": "Pile-on thread targeting a journalist.",
+        "neighboring_posts": [
+          "Users are posting identifying details.",
+          "The target asks people to stop."
+        ],
+        "hostility_signal": 0.94,
+        "irony_signal": 0.02,
+        "brigading_signal": 0.83
+      },
+      "relevant_policy_section": "ABUSE-1",
+      "truth": {
+        "gold_action": "remove_content",
+        "severity": "critical",
+        "harmful": true,
+        "ambiguous": false,
+        "severe_violation": true,
+        "requires_user_history": false,
+        "requires_thread_context": false,
+        "requires_policy_lookup": false,
+        "likely_appeal_if_overenforced": 0.05,
+        "likely_harm_if_ignored": 1.0,
+        "brigading_target": false,
+        "false_report": false,
+        "recommended_notes": "Clear doxxing and harassment."
+      }
+    },
+    {
+      "report_id": "hard-007",
+      "content_id": "post-3007",
+      "user_id": "user-oscar",
+      "thread_id": "thread-h7",
+      "author_handle": "oscar_hottake",
+      "content_text": "This outbreak is fake. Don't listen to hospitals, they profit from panic.",
+      "content_type": "post",
+      "report_reason": "harmful misinformation",
+      "reporter_count": 11,
+      "queue_priority": 8,
+      "created_at": "2026-04-08T10:06:00Z",
+      "language": "en",
+      "visible_note": "Potential real-world harm but context unclear.",
+      "available_user_history": {
+        "prior_warnings": 1,
+        "prior_removals": 1,
+        "recent_reports_against": 5,
+        "account_age_days": 430,
+        "trust_tier": "standard",
+        "note": "Repeated borderline public-health claims."
+      },
+      "available_thread_context": {
+        "thread_id": "thread-h7",
+        "summary": "The author is presenting the claim as fact to a large audience.",
+        "neighboring_posts": [
+          "Replies ask for sources and warn about panic.",
+          "Some users are amplifying the claim."
+        ],
+        "hostility_signal": 0.15,
+        "irony_signal": 0.05,
+        "brigading_signal": 0.2
+      },
+      "relevant_policy_section": "MISINFO-2",
+      "truth": {
+        "gold_action": "escalate_case",
+        "severity": "high",
+        "harmful": true,
+        "ambiguous": true,
+        "severe_violation": true,
+        "requires_user_history": false,
+        "requires_thread_context": false,
+        "requires_policy_lookup": true,
+        "likely_appeal_if_overenforced": 0.25,
+        "likely_harm_if_ignored": 0.85,
+        "brigading_target": false,
+        "false_report": false,
+        "recommended_notes": "Escalation is safer than guesswork."
+      }
+    },
+    {
+      "report_id": "hard-008",
+      "content_id": "post-3008",
+      "user_id": "user-papa",
+      "thread_id": "thread-h8",
+      "author_handle": "papa_snipes",
+      "content_text": "Maybe read the article before embarrassing yourself again.",
+      "content_type": "comment",
+      "report_reason": "bullying",
+      "reporter_count": 2,
+      "queue_priority": 5,
+      "created_at": "2026-04-08T10:07:00Z",
+      "language": "en",
+      "visible_note": "Low-severity insult during a hectic surge.",
+      "available_user_history": {
+        "prior_warnings": 1,
+        "prior_removals": 0,
+        "recent_reports_against": 2,
+        "account_age_days": 260,
+        "trust_tier": "standard",
+        "note": "Occasionally rude but not persistently abusive."
+      },
+      "available_thread_context": {
+        "thread_id": "thread-h8",
+        "summary": "Thread is argumentative but not overtly abusive.",
+        "neighboring_posts": [
+          "The target called the author uninformed first.",
+          "Both users trade mild insults."
+        ],
+        "hostility_signal": 0.45,
+        "irony_signal": 0.1,
+        "brigading_signal": 0.0
+      },
+      "relevant_policy_section": "ABUSE-1",
+      "truth": {
+        "gold_action": "warn_user",
+        "severity": "low",
+        "harmful": true,
+        "ambiguous": false,
+        "severe_violation": false,
+        "requires_user_history": false,
+        "requires_thread_context": false,
+        "requires_policy_lookup": false,
+        "likely_appeal_if_overenforced": 0.3,
+        "likely_harm_if_ignored": 0.25,
+        "brigading_target": false,
+        "false_report": false,
+        "recommended_notes": "Warning is enough if time permits."
+      }
+    }
+  ]
+}
