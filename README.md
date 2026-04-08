@@ -166,6 +166,23 @@ pip install -e .[dev]
 python -m modbot.scripts.demo_rollout easy --seed 7
 ```
 
+## Multi-Mode Deployment Readiness
+
+The repository includes the validator-facing files required for multi-mode deployment:
+
+- repo-root `inference.py`
+- repo-root `server/app.py`
+- `[project.scripts].server` in `pyproject.toml`
+- `openenv-core>=0.2.0`
+- checked-in `uv.lock`
+
+Useful commands:
+
+```bash
+uv lock
+uv run server
+```
+
 ## Environment Variables
 
 The project supports an optional root `.env` file for local development.
@@ -210,6 +227,7 @@ Example output from the local heuristic baseline:
 
 ```bash
 python -m modbot.app.api.server
+uv run server
 ```
 
 Key endpoints:

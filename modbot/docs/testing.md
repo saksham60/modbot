@@ -6,6 +6,7 @@
 python -m venv .venv
 . .venv/Scripts/activate
 pip install -e .[dev]
+uv lock
 ```
 
 ## Root Benchmark Inference
@@ -36,12 +37,20 @@ set API_BASE_URL=https://api.openai.com/v1
 python inference.py
 ```
 
+Check the required validator files:
+
+```bash
+python -c "from pathlib import Path; print(Path('uv.lock').is_file())"
+python -c "from pathlib import Path; print(Path('server/app.py').is_file())"
+```
+
 ## API Smoke Tests
 
 Start the API:
 
 ```bash
 python -m modbot.app.api.server
+uv run server
 ```
 
 Health:
