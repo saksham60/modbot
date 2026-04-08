@@ -72,11 +72,13 @@ body, .gradio-container {
 }
 """
 
+UI_THEME = gr.themes.Soft()
+
 
 def build_ui() -> gr.Blocks:
     """Build the Gradio console."""
 
-    with gr.Blocks(title="ModBot Console", css=CUSTOM_CSS, theme=gr.themes.Soft()) as demo:
+    with gr.Blocks(title="ModBot Console") as demo:
         session_id = gr.State("")
 
         gr.HTML(
