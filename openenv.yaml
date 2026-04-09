@@ -12,9 +12,31 @@ observation_model: modbot.env.models.observation:ObservationModel
 info_model: modbot.env.models.info:StepInfoModel
 state_model: modbot.env.models.state:EnvironmentStateModel
 tasks:
-  - easy
-  - medium
-  - hard
+  - id: easy
+    title: Clear-Cut Moderation
+    description: Clear-cut harmful and benign moderation cases.
+    difficulty: easy
+    data_glob: modbot/data/easy/*.json
+    grader: modbot.env.grader.easy_grader:EasyTaskGrader
+    grader_key: easy
+  - id: medium
+    title: Contextual Moderation
+    description: Context-dependent moderation with ambiguity and sarcasm.
+    difficulty: medium
+    data_glob: modbot/data/medium/*.json
+    grader: modbot.env.grader.medium_grader:MediumTaskGrader
+    grader_key: medium
+  - id: hard
+    title: Brigading Surge
+    description: Brigading surge with false reports, real harm, and tight review budget.
+    difficulty: hard
+    data_glob: modbot/data/hard/*.json
+    grader: modbot.env.grader.hard_grader:HardTaskGrader
+    grader_key: hard
+graders:
+  easy: modbot.env.grader.easy_grader:EasyTaskGrader
+  medium: modbot.env.grader.medium_grader:MediumTaskGrader
+  hard: modbot.env.grader.hard_grader:HardTaskGrader
 seed_support: true
 deployment:
   dockerfile: Dockerfile

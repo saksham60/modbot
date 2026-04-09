@@ -8,7 +8,9 @@ from pydantic import ValidationError
 from modbot.app.api.deps import get_session_store
 from modbot.app.api.schemas import (
     HealthResponse,
+    MetadataResponse,
     OpenEnvStepResponse,
+    SchemaResponse,
     SessionRequest,
     SessionResponse,
     StateResponse,
@@ -21,7 +23,36 @@ from modbot.env.models.state import EnvironmentStateModel
 from modbot.app.api.services.session_store import SessionStore
 
 router = APIRouter(tags=["environment"])
-SUPPORTED_TASKS = ["easy", "medium", "hard"]
+TASKS_WITH_GRADERS = [
+    {
+        "id": "easy",
+        "title": "Clear-Cut Moderation",
+        "description": "Clear-cut harmful and benign moderation cases.",
+        "difficulty": "easy",
+        "data_glob": "modbot/data/easy/*.json",
+        "grader": "modbot.env.grader.easy_grader:EasyTaskGrader",
+        "grader_key": "easy",
+    },
+    {
+        "id": "medium",
+        "title": "Contextual Moderation",
+        "description": "Context-dependent moderation with ambiguity and sarcasm.",
+        "difficulty": "medium",
+        "data_glob": "modbot/data/medium/*.json",
+        "grader": "modbot.env.grader.medium_grader:MediumTaskGrader",
+        "grader_key": "medium",
+    },
+    {
+        "id": "hard",
+        "title": "Brigading Surge",
+        "description": "Brigading surge with false reports, real harm, and tight review budget.",
+        "difficulty": "hard",
+        "data_glob": "modbot/data/hard/*.json",
+        "grader": "modbot.env.grader.hard_grader:HardTaskGrader",
+        "grader_key": "hard",
+    },
+]
+SUPPORTED_TASKS = [task["id"] for task in TASKS_WITH_GRADERS]
 OPENENV_SESSION_ID = "__openenv__"
 
 
@@ -30,17 +61,68 @@ def health(session_store: SessionStore = Depends(get_session_store)) -> HealthRe
     """Return a service health payload."""
 
     return HealthResponse(
-        status="ok",
+        status="healthy",
         active_sessions=session_store.active_session_count(),
         supported_tasks=SUPPORTED_TASKS,
     )
 
 
-@router.get("/tasks")
-def tasks() -> dict[str, list[str]]:
-    """List task identifiers supported by the environment."""
+@router.get("/metadata", response_model=MetadataResponse)
+def metadata() -> MetadataResponse:
+    """Return OpenEnv metadata including task grader declarations."""
 
-    return {"tasks": SUPPORTED_TASKS}
+    return MetadataResponse(
+        name="modbot",
+        title="ModBot - Trust & Safety Policy Simulator",
+        description=(
+            "A stateful moderation operations environment with sequential actions, "
+            "hidden world state, dense reward shaping, and deterministic final grading."
+        ),
+        tasks=TASKS_WITH_GRADERS,
+    )
+
+
+@router.get("/schema", response_model=SchemaResponse)
+def schema() -> SchemaResponse:
+    """Return the public action, observation, and state schemas."""
+
+    return SchemaResponse(
+        action=ActionModel.model_json_schema(),
+        observation=ObservationModel.model_json_schema(),
+        state=EnvironmentStateModel.model_json_schema(),
+    )
+
+
+@router.post("/mcp")
+def mcp(request: dict[str, Any] | None = Body(default=None)) -> dict[str, Any]:
+    """Return a minimal JSON-RPC MCP payload for OpenEnv smoke validation."""
+
+    request = request or {}
+    rpc_id = request.get("id")
+    method = request.get("method")
+
+    if method == "initialize":
+        result: dict[str, Any] = {
+            "protocolVersion": "2024-11-05",
+            "capabilities": {"tools": {}},
+            "serverInfo": {"name": "modbot", "version": "0.1.0"},
+        }
+    elif method == "tools/list":
+        result = {"tools": []}
+    else:
+        result = {}
+
+    response: dict[str, Any] = {"jsonrpc": "2.0", "result": result}
+    if rpc_id is not None:
+        response["id"] = rpc_id
+    return response
+
+
+@router.get("/tasks")
+def tasks() -> dict[str, list[Any]]:
+    """List task identifiers and validator-facing grader metadata."""
+
+    return {"tasks": TASKS_WITH_GRADERS, "task_ids": SUPPORTED_TASKS}
 
 
 @router.post("/sessions", response_model=SessionResponse)

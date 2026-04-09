@@ -1,5 +1,7 @@
 """Pydantic request and response schemas for the API layer."""
 
+from typing import Any
+
 from pydantic import BaseModel
 
 from modbot.env.models.action import ActionModel
@@ -60,3 +62,20 @@ class HealthResponse(BaseModel):
     status: str
     active_sessions: int
     supported_tasks: list[str]
+
+
+class MetadataResponse(BaseModel):
+    """OpenEnv metadata payload."""
+
+    name: str
+    title: str
+    description: str
+    tasks: list[dict[str, Any]]
+
+
+class SchemaResponse(BaseModel):
+    """JSON schemas exposed for OpenEnv validators and clients."""
+
+    action: dict[str, Any]
+    observation: dict[str, Any]
+    state: dict[str, Any]

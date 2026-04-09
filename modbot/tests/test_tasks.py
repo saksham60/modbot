@@ -1,3 +1,7 @@
+from pathlib import Path
+
+import yaml
+
 from modbot.env.core.environment import ModBotEnv
 from modbot.env.tasks.task_factory import TaskFactory
 
@@ -12,6 +16,16 @@ def test_task_factory_loads_all_tasks() -> None:
     assert medium.task_id == "medium"
     assert hard.task_id == "hard"
     assert len(hard.reports) == 8
+
+
+def test_openenv_metadata_declares_three_task_graders() -> None:
+    metadata = yaml.safe_load(Path("openenv.yaml").read_text(encoding="utf-8"))
+
+    tasks = metadata["tasks"]
+    tasks_with_graders = [task for task in tasks if task.get("grader")]
+
+    assert len(tasks_with_graders) >= 3
+    assert {task["id"] for task in tasks_with_graders} == {"easy", "medium", "hard"}
 
 
 def test_seed_determinism_changes_queue_order() -> None:
