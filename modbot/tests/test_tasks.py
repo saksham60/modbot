@@ -1,3 +1,4 @@
+import importlib
 from pathlib import Path
 
 import yaml
@@ -26,6 +27,13 @@ def test_openenv_metadata_declares_three_task_graders() -> None:
 
     assert len(tasks_with_graders) >= 3
     assert {task["id"] for task in tasks_with_graders} == {"easy", "medium", "hard"}
+    assert all(task.get("name") for task in tasks_with_graders)
+    for task in tasks_with_graders:
+        module_name, function_name = task["grader"].split(":")
+        grader = getattr(importlib.import_module(module_name), function_name)
+        result = grader(actions=[], seed=7)
+        assert result["task_id"] == task["id"]
+        assert 0.0 <= result["score"] <= 1.0
 
 
 def test_seed_determinism_changes_queue_order() -> None:

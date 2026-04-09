@@ -1,8 +1,21 @@
+id: modbot
 name: modbot
+version: "1.0.0"
 title: ModBot - Trust & Safety Policy Simulator
 description: >
   A stateful moderation operations environment with sequential actions,
   hidden world state, dense reward shaping, and deterministic final grading.
+tags:
+  - openenv
+  - reinforcement-learning
+  - trust-and-safety
+endpoints:
+  tasks: /tasks
+  grader: /grader
+  reset: /reset
+  step: /step
+  state: /state
+  schema: /schema
 entrypoint: modbot.env.core.environment:ModBotEnv
 reset_method: reset
 step_method: step
@@ -13,30 +26,36 @@ info_model: modbot.env.models.info:StepInfoModel
 state_model: modbot.env.models.state:EnvironmentStateModel
 tasks:
   - id: easy
+    name: Clear-Cut Moderation
     title: Clear-Cut Moderation
     description: Clear-cut harmful and benign moderation cases.
     difficulty: easy
     data_glob: modbot/data/easy/*.json
-    grader: modbot.env.grader.easy_grader:EasyTaskGrader
+    grader: modbot.env.grader.public:grade_easy
     grader_key: easy
+    grader_endpoint: /grader
   - id: medium
+    name: Contextual Moderation
     title: Contextual Moderation
     description: Context-dependent moderation with ambiguity and sarcasm.
     difficulty: medium
     data_glob: modbot/data/medium/*.json
-    grader: modbot.env.grader.medium_grader:MediumTaskGrader
+    grader: modbot.env.grader.public:grade_medium
     grader_key: medium
+    grader_endpoint: /grader
   - id: hard
+    name: Brigading Surge
     title: Brigading Surge
     description: Brigading surge with false reports, real harm, and tight review budget.
     difficulty: hard
     data_glob: modbot/data/hard/*.json
-    grader: modbot.env.grader.hard_grader:HardTaskGrader
+    grader: modbot.env.grader.public:grade_hard
     grader_key: hard
+    grader_endpoint: /grader
 graders:
-  easy: modbot.env.grader.easy_grader:EasyTaskGrader
-  medium: modbot.env.grader.medium_grader:MediumTaskGrader
-  hard: modbot.env.grader.hard_grader:HardTaskGrader
+  easy: modbot.env.grader.public:grade_easy
+  medium: modbot.env.grader.public:grade_medium
+  hard: modbot.env.grader.public:grade_hard
 seed_support: true
 deployment:
   dockerfile: Dockerfile

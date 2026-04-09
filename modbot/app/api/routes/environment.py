@@ -7,6 +7,8 @@ from pydantic import ValidationError
 
 from modbot.app.api.deps import get_session_store
 from modbot.app.api.schemas import (
+    GraderRequest,
+    GraderResponse,
     HealthResponse,
     MetadataResponse,
     OpenEnvStepResponse,
@@ -21,35 +23,45 @@ from modbot.env.models.action import ActionModel
 from modbot.env.models.observation import ObservationModel
 from modbot.env.models.state import EnvironmentStateModel
 from modbot.app.api.services.session_store import SessionStore
+from modbot.env.grader.public import grade_task
 
 router = APIRouter(tags=["environment"])
 TASKS_WITH_GRADERS = [
     {
         "id": "easy",
+        "name": "Clear-Cut Moderation",
         "title": "Clear-Cut Moderation",
         "description": "Clear-cut harmful and benign moderation cases.",
         "difficulty": "easy",
         "data_glob": "modbot/data/easy/*.json",
-        "grader": "modbot.env.grader.easy_grader:EasyTaskGrader",
+        "grader": "modbot.env.grader.public:grade_easy",
         "grader_key": "easy",
+        "grader_endpoint": "/grader",
+        "has_grader": True,
     },
     {
         "id": "medium",
+        "name": "Contextual Moderation",
         "title": "Contextual Moderation",
         "description": "Context-dependent moderation with ambiguity and sarcasm.",
         "difficulty": "medium",
         "data_glob": "modbot/data/medium/*.json",
-        "grader": "modbot.env.grader.medium_grader:MediumTaskGrader",
+        "grader": "modbot.env.grader.public:grade_medium",
         "grader_key": "medium",
+        "grader_endpoint": "/grader",
+        "has_grader": True,
     },
     {
         "id": "hard",
+        "name": "Brigading Surge",
         "title": "Brigading Surge",
         "description": "Brigading surge with false reports, real harm, and tight review budget.",
         "difficulty": "hard",
         "data_glob": "modbot/data/hard/*.json",
-        "grader": "modbot.env.grader.hard_grader:HardTaskGrader",
+        "grader": "modbot.env.grader.public:grade_hard",
         "grader_key": "hard",
+        "grader_endpoint": "/grader",
+        "has_grader": True,
     },
 ]
 SUPPORTED_TASKS = [task["id"] for task in TASKS_WITH_GRADERS]
@@ -79,6 +91,7 @@ def metadata() -> MetadataResponse:
             "hidden world state, dense reward shaping, and deterministic final grading."
         ),
         tasks=TASKS_WITH_GRADERS,
+        graders={task["id"]: task["grader"] for task in TASKS_WITH_GRADERS},
     )
 
 
@@ -119,10 +132,27 @@ def mcp(request: dict[str, Any] | None = Body(default=None)) -> dict[str, Any]:
 
 
 @router.get("/tasks")
-def tasks() -> dict[str, list[Any]]:
+def tasks() -> dict[str, Any]:
     """List task identifiers and validator-facing grader metadata."""
 
-    return {"tasks": TASKS_WITH_GRADERS, "task_ids": SUPPORTED_TASKS}
+    return {
+        "tasks": TASKS_WITH_GRADERS,
+        "task_ids": SUPPORTED_TASKS,
+        "graders": {task["id"]: task["grader"] for task in TASKS_WITH_GRADERS},
+        "action_schema": ActionModel.model_json_schema(),
+    }
+
+
+@router.post("/grader", response_model=GraderResponse)
+def grader(request: GraderRequest) -> GraderResponse:
+    """Grade a submitted trajectory for a specific task."""
+
+    result = grade_task(
+        task_id=request.task_id,
+        actions=[action.model_dump(exclude_none=True) for action in request.actions],
+        seed=request.seed,
+    )
+    return GraderResponse(score=result["score"], result=result)
 
 
 @router.post("/sessions", response_model=SessionResponse)

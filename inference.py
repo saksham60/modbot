@@ -24,7 +24,8 @@ async def _main() -> None:
     )
     model_name = os.getenv("MODEL_NAME", "gpt-4.1-mini")
     image_name = os.getenv("LOCAL_IMAGE_NAME") or os.getenv("IMAGE_NAME")
-    task_name = os.getenv("MODBOT_TASK", "easy")
+    configured_task = os.getenv("MODBOT_TASK")
+    task_names = [configured_task] if configured_task else ["easy", "medium", "hard"]
     benchmark_name = os.getenv("MODBOT_BENCHMARK", "modbot")
     max_steps = int(os.getenv("MODBOT_MAX_STEPS", "64"))
     success_threshold = float(os.getenv("MODBOT_SUCCESS_THRESHOLD", "0.5"))
@@ -35,36 +36,33 @@ async def _main() -> None:
         client=client,
         config=LLMClientConfig(model_name=model_name, timeout_seconds=timeout_seconds),
     )
-    env = None
-    result = EpisodeResult()
-    caught_error: BaseException | None = None
+    for task_name in task_names:
+        env = None
+        result = EpisodeResult()
 
-    try:
-        env = create_environment(task_name=task_name, image_name=image_name)
-        log_start(task=task_name, env=benchmark_name, model=model_name)
-        result = await run_episode(
-            env=env,
-            llm_client=llm_client,
-            task_name=task_name,
-            max_steps=max_steps,
-            success_threshold=success_threshold,
-        )
-    except BaseException as error:  # noqa: BLE001 - benchmark wrapper must always log [END]
-        caught_error = error
-    finally:
         try:
-            if env is not None:
-                await close_environment(env)
-        finally:
-            log_end(
-                success=result.success,
-                steps=result.steps,
-                score=result.score,
-                rewards=result.rewards,
+            log_start(task=task_name, env=benchmark_name, model=model_name)
+            env = create_environment(task_name=task_name, image_name=image_name)
+            result = await run_episode(
+                env=env,
+                llm_client=llm_client,
+                task_name=task_name,
+                max_steps=max_steps,
+                success_threshold=success_threshold,
             )
-
-    if caught_error is not None:
-        raise caught_error
+        except BaseException:  # noqa: BLE001 - benchmark wrapper must always emit parseable output
+            result = EpisodeResult()
+        finally:
+            try:
+                if env is not None:
+                    await close_environment(env)
+            finally:
+                log_end(
+                    success=result.success,
+                    steps=result.steps,
+                    score=result.score,
+                    rewards=result.rewards,
+                )
 
 
 if __name__ == "__main__":

@@ -39,6 +39,9 @@ def test_tasks_endpoint_exposes_graders() -> None:
     assert payload["task_ids"] == ["easy", "medium", "hard"]
     assert len([task for task in tasks if task.get("grader")]) >= 3
     assert {task["id"] for task in tasks} == {"easy", "medium", "hard"}
+    assert all(task["name"] for task in tasks)
+    assert all(task["has_grader"] is True for task in tasks)
+    assert set(payload["graders"]) == {"easy", "medium", "hard"}
 
 
 def test_metadata_and_schema_endpoints_are_openenv_ready() -> None:
@@ -46,12 +49,25 @@ def test_metadata_and_schema_endpoints_are_openenv_ready() -> None:
 
     metadata = client.get("/metadata")
     assert metadata.status_code == 200
-    assert len([task for task in metadata.json()["tasks"] if task.get("grader")]) >= 3
+    metadata_payload = metadata.json()
+    assert len([task for task in metadata_payload["tasks"] if task.get("grader")]) >= 3
+    assert set(metadata_payload["graders"]) == {"easy", "medium", "hard"}
 
     schema = client.get("/schema")
     assert schema.status_code == 200
     schema_payload = schema.json()
     assert {"action", "observation", "state"}.issubset(schema_payload)
+
+
+def test_grader_endpoint_scores_task_trajectory() -> None:
+    client = TestClient(create_app())
+
+    response = client.post("/grader", json={"task_id": "easy", "actions": [], "seed": 7})
+    assert response.status_code == 200
+    payload = response.json()
+    assert 0.0 <= payload["score"] <= 1.0
+    assert payload["result"]["task_id"] == "easy"
+    assert payload["result"]["actions_evaluated"] == 0
 
 
 def test_mcp_endpoint_is_json_rpc_reachable() -> None:

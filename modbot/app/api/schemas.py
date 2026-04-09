@@ -2,7 +2,7 @@
 
 from typing import Any
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 from modbot.env.models.action import ActionModel
 from modbot.env.models.info import StepInfoModel
@@ -64,6 +64,21 @@ class HealthResponse(BaseModel):
     supported_tasks: list[str]
 
 
+class GraderRequest(BaseModel):
+    """Trajectory submitted to the deterministic grader."""
+
+    task_id: str
+    actions: list[ActionModel] = Field(default_factory=list)
+    seed: int | None = None
+
+
+class GraderResponse(BaseModel):
+    """Score returned by a task grader."""
+
+    score: float
+    result: dict[str, Any]
+
+
 class MetadataResponse(BaseModel):
     """OpenEnv metadata payload."""
 
@@ -71,6 +86,7 @@ class MetadataResponse(BaseModel):
     title: str
     description: str
     tasks: list[dict[str, Any]]
+    graders: dict[str, str]
 
 
 class SchemaResponse(BaseModel):
